@@ -1,0 +1,7 @@
+from sklearn import svm
+X = [[0, 0.2], [1, 2 ]]
+y = [0, 1]
+clf = svm.SVC(kernel = 'linear')
+clf.fit(X, y)  
+print(clf.coef_)
+print(clf.n_support_)

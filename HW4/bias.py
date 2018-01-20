@@ -1,0 +1,20 @@
+import numpy
+import matplotlib.pyplot as plt
+x = numpy.random.uniform(low=-1.0,high=1.0,size=[1000,2])
+y = numpy.sin(x*numpy.pi)
+z = numpy.sqrt((numpy.square(y[:,0])+numpy.square(y[:,1]))/(numpy.square(x[:,0])+numpy.square(x[:,1])))
+z2 = numpy.mean(y,axis=1)
+a = numpy.mean(z)
+b = numpy.mean(z2)
+bia1 = numpy.square(y-a*x)
+bia2 = numpy.square(y-b)
+print('bias ', numpy.mean(bia1), numpy.mean(bia2))
+z=z.reshape((1000,1))
+z2 = z2.reshape((1000,1))
+print('var ', numpy.mean(numpy.square(numpy.concatenate((z,z),axis=1)*x-a*x)), numpy.mean(numpy.square(z2)))
+xa = numpy.arange(-1.0,1.0,0.0001)
+fig, ax = plt.subplots()
+ax.plot(xa,numpy.sin(xa*numpy.pi))
+for i in z:
+	ax.plot(xa, xa*i, color = 'gray', alpha = 0.01)
+plt.show()

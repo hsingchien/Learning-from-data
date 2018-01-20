@@ -1,0 +1,26 @@
+import pandas as pd
+import numpy as np
+from sklearn import svm
+import matplotlib.pyplot as plt
+
+indata = pd.DataFrame({'x1': [1,0,0,-1,0,0,-2], 'x2': [0,1,-1,0,2,-2,0],
+'y':[-1,-1,-1,1,1,1,1]})
+def mykernel(X,Y):
+	return (1+np.dot(X,Y.T))**2
+clf = svm.SVC(kernel = mykernel, C = np.inf)
+clf.fit(indata.loc[:,['x1','x2']], indata.loc[:,'y'])
+print(clf.n_support_)
+s = plt.figure(1)
+plt.scatter(indata[indata.y == -1].loc[:,'x1'],
+	indata[indata.y == -1].loc[:,'x2'], color='red')
+plt.scatter(indata[indata.y == 1].loc[:,'x1'],
+	indata[indata.y == 1].loc[:,'x2'], color='green')
+x1 = np.linspace(-2,2,200)
+x2 = np.linspace(-2,2,200)
+X1,X2 = np.meshgrid(x1,x2)
+FX1 = np.ndarray.flatten(X1)
+FX2 = np.ndarray.flatten(X2)
+M = np.array((FX1,FX2))
+F = np.reshape(clf.predict(np.transpose(M)), np.shape(X1))
+plt.contour(X1,X2,F,[0])
+plt.show()
